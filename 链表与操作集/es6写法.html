@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			class node{
+				constructor(data) {
+				  this.data = data;
+					this.next = null;
+				}
+			}
+			class List{
+				constructor() {
+					this.size = 0;
+					this.head = null;
+					this.tail = null;
+				}
+				//顺序插入节点
+				add(data){
+					const pnew = new node(data);
+					if(this.head==null){
+						this.head = this.tail = pnew;
+					}else{
+						this.tail.next = pnew;
+						this.tail = pnew;
+
+					}
+					this.size++;
+				}
+				//根据下标插入
+				addByIndex(index,data){
+					let p = this.head;
+					let t = new node(data);
+					while(index--){
+						p = p.next;
+					}
+					t.next = p.next;
+					p.next = t;
+					this.size++;
+				}	
+				//根据数据插入
+				addByData(oldData,newData){
+					let p = this.head;
+					let t = new node(newData);
+					while(p){
+						if(p.data == oldData){
+							t.next = p.next;
+							p.next = t;
+						}
+						p = p.next;
+					}
+					this.size++;		
+				}
+				remove(index){
+					let p,t;
+					p = t = this.head;
+					if(index == 0){
+						this.head = this.head.next;
+						return;
+					}
+					while(index--){
+						t = p;
+						p = p.next;
+					}
+					t.next = p.next;
+					if(this.tail == p){
+						this.tail = t;
+						console.log('目前的tail：');
+						console.log(t);
+					}
+					this.size--;
+				}
+				removeByData(data){
+					let p,t;
+					p = this.head;
+					while(p){
+						if(p.data === data){
+							console.log(p);
+							if(this.head == p){
+								this.head = this.head.next;
+								return;
+							}
+							t.next = p.next;
+							if(this.tail == p){
+								this.tail = t;
+								console.log(t);
+							}
+							return;
+						}
+						t = p;
+						p = p.next;
+					}	
+				}
+				findData(data){
+					let p = this.head;
+					let i = 0;
+					while(p){
+						if(p.data == data){
+							return i;
+						}
+						i++;
+						p = p.next;
+					}
+				}
+				  print() {
+				    let string = '';
+				    let current = this.head;
+				    while(current) {
+				      string += `${current.data} `;
+				      current = current.next;
+				    }
+				    console.log(string.trim());
+				  }
+			}
+			for (var i=0;i<10;i++) {
+			return function() {
+			console.log(i);
+			}
+			}
+			let a = new List();
+			a.add(1);
+			a.add(2);
+			a.add(3);
+			a.add('wqdsdasd');
+			a.add([1,2,6,9]);
+			a.add(777);
+			// a.addByIndex(3,'大螃蟹');
+			// a.addByData(1,'我是插在1后面的数据');
+
+			a.print()
+		</script>
+	</body>
+</html>
