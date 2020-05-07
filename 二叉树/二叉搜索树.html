@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function BST(){
+				function Node(key){
+					this.key = key;
+					this.left = null;
+					this.right = null;
+				}
+				//属性
+				this.root = null;
+				//插入节点
+				BST.prototype.insertNode = function(key){
+					let pnew = new Node(key);
+					if(this.root == null){
+						this.root = pnew;
+					}else{
+						this.insertDigui(this.root,pnew);
+						
+					}
+				}
+				BST.prototype.insertDigui = function(node,newNode){
+					if(node.key>newNode.key){
+						if(node.left == null) node.left = newNode;
+						else this.insertDigui(node.left,newNode);
+					}else{
+						if(node.right == null) node.right = newNode;
+						else this.insertDigui(node.right,newNode);
+					}
+				}
+				//遍历 打印位置在哪就是先序中序后序遍历
+				BST.prototype.inOrderTravalDetail = function(node){
+					if(node!==null){
+						this.inOrderTravalDetail(node.left);
+						console.log(node.key);
+						this.inOrderTravalDetail(node.right);
+						
+					}
+				}
+				BST.prototype.traval = function(){
+					this.inOrderTravalDetail(this.root);
+				}
+				
+				BST.prototype.findMax = function(){
+					let node = this.root;
+					while(node.right!==null){
+						node = node.right;
+					}
+					return node;
+				}
+				BST.prototype.findMin = function(){
+					let node = this.root;
+					while(node.left!==null){
+						node = node.left;
+					}
+					return node;
+				}
+				//找特定的值
+				BST.prototype.findKey = function(key){
+					return this.find(this.root,key);
+				}
+				BST.prototype.find = function(node,key){
+					if(node === null)return false
+					if(node.key > key){
+						return this.find(node.left,key);
+					}else if(node.key < key){
+						return this.find(node.right,key);
+					}else{
+						return true
+					}
+				}
+				// 删除结点 暴露的方法
+				BST.prototype.del = function(key){
+					this.remove(this.root,key);
+					
+				}
+				BST.prototype.remove = function(node,key){
+					if(node===null){
+						return null;
+					}
+					if(key == node.key){
+						if(node.left==null && node.right==null){
+							node =	  null;
+						}
+						else if(node.left==null || node.right==null){
+							//有一个子节点的情况下，返回该子节点
+							node =  node.left==null? node.right : node.left;
+						}
+						else{
+							//两个子节点情况下，右子树最小的那个节点	
+							let successor = node.right;
+							while(successor.left !== null){
+								successor = successor.left;
+							}
+							node.key = successor.key;
+							node.riht = this.remove(node.right,node.key);
+						}
+					}
+					else if (key > node.key) {
+						
+						 node.right = this.remove(node.right, key);
+					}
+					// 在左子树删除
+					else if (key < node.key) {
+							node.left = this.remove(node.left, key);
+					}
+					return node;
+				}
+				BST.prototype.deepMax = function(){
+					if(this.root==null) return 0;
+					let temp = [this.root];
+					let cnt = 0;
+					while(temp.length){
+						console.log(temp.length);
+						cnt++;
+						for(let i=0;i<temp.length;i++){
+							
+							let node = temp.shift();
+							node.left==null ? 0 : temp.push(node.left);
+							node.right==null ? 0 : temp.push(node.right);
+							console.log(node);
+						}
+						
+					}
+					return cnt;
+				}
+		}	
+			let tree = new BST();
+			tree.insertNode(5);
+			tree.insertNode(7);
+			tree.insertNode(3);
+			tree.insertNode(2);
+			tree.insertNode(6);
+			tree.insertNode(4);
+			tree.insertNode(8);
+			
+
+			// tree.del(121);
+			// tree.del(65);
+			console.log(tree.deepMax());
+			
+			
+			// tree.traval();
+		</script>
+	</body>
+</html>
