@@ -42,6 +42,46 @@
 						
 					}
 				}
+				//非递归先序
+				BST.prototype.print = function(){
+					let arr = [this.root];
+					let res = [];
+					while(arr.length){
+						let node = arr.pop();
+						res.push(node.key);
+						node.right&&arr.push(node.right);
+						node.left&&arr.push(node.left);
+					}
+					return res;
+				}
+				BST.prototype.printre = function(){
+					let arr = [this.root];
+					let res = [];
+					while(arr.length){
+						let node = arr.pop();
+						res.unshift(node.key);
+						node.right&&arr.push(node.right);
+						node.left&&arr.push(node.left);
+					}
+					return res;
+				}
+				//非递归中序
+				BST.prototype.printmid = function(){
+					let node = this.root;
+					let stack = [];
+					let res = [];
+					while(node||stack.length){
+						if(node){
+							stack.push(node);
+							node = node.left;
+						}else{
+							node = stack.pop();
+							res.push(node.key);
+							node = node.right;
+						}
+					}
+					return res
+				}
 				BST.prototype.traval = function(){
 					this.inOrderTravalDetail(this.root);
 				}
@@ -116,9 +156,9 @@
 					let temp = [this.root];
 					let cnt = 0;
 					while(temp.length){
-						console.log(temp.length);
 						cnt++;
-						for(let i=0;i<temp.length;i++){
+						let len = temp.length;
+						while(len--){
 							
 							let node = temp.shift();
 							node.left==null ? 0 : temp.push(node.left);
@@ -129,6 +169,80 @@
 					}
 					return cnt;
 				}
+				BST.prototype.deepMin = function(){
+					if(this.root == null) return 0
+					let temp = [this.root];
+					let cnt = 0;
+					while(temp.length){
+						cnt++;
+						let len = temp.length;
+						while(len--){
+							let node = temp.shift();
+							if(node.left==null && node.right== null){
+								return cnt;
+							}
+							if(node.left) temp.push(node.left);
+							if(node.right) temp.push(node.right)
+						}
+						
+					}
+					return cnt
+				}
+				
+				BST.prototype.cenxu = function(){
+					let arr = [this.root];
+					let res = [];
+					while(arr.length){
+						let len = arr.length;
+						let temp = [];
+						while(len--){
+							let node = arr.shift();
+							temp.push(node.key);
+							if(node.left) arr.push(node.left);
+							if(node.right) arr.push(node.right)
+						}
+						res.push(temp);
+
+					}
+					return res;	
+				}
+				BST.prototype.viewLeft = function(){
+					let arr = [this.root];
+					let res = [];
+					while(arr.length){
+						let len = arr.length;
+						let temp = [];
+						while(len--){
+							let node = arr.shift();
+							temp.push(node.key);
+							if(node.left) arr.push(node.left);
+							if(node.right) arr.push(node.right)
+						}
+						res.push(temp);
+				
+					}
+					return res;	
+				}
+				BST.prototype.zPrintf = function(){
+					if(!this.root)return
+					let arr = [this.root];
+					let res = [];
+					let flag = 1;
+					while(arr.length){
+						let len = arr.length;
+						let tmp = [];
+						for(let i=0;i<len;i++){
+							let node = arr.shift();
+							node.left&&arr.push(node.left);
+							node.right&&arr.push(node.right);
+							tmp.push(node.key);
+						}
+						!flag&&tmp.reverse();
+						flag = !flag;
+						res.push(tmp);
+					}
+					return res;
+				}
 		}	
 			let tree = new BST();
 			tree.insertNode(5);
@@ -138,11 +252,14 @@
 			tree.insertNode(6);
 			tree.insertNode(4);
 			tree.insertNode(8);
+			tree.insertNode(9);
+			tree.insertNode(10);
 			
 
 			// tree.del(121);
 			// tree.del(65);
 			console.log(tree.deepMax());
+			console.log(tree.deepMin());
 			
 			
 			// tree.traval();
